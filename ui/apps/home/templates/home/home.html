@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block css-file %}
+  {{ block.super }}
+  <link rel="stylesheet/less" type="text/css" href="{% static 'home/css/home.less' %}">
+{% endblock %}
+{% block main %}
+<div class="search">
+  <div class="search-logo">
+    glaucusis
+  </div>
+  <div class="search-content">
+    <div class="form-group">
+      <input class="form-control" id="focusedInput" type="text" placeholder="{% trans '搜索公司/代码' %}">
+    </div>
+  </div>
+</div>
+{% endblock %}

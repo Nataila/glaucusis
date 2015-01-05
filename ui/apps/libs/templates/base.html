@@ -1,0 +1,132 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}glaucusis{% endblock %}</title>
+  {% block css-file %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/theme/superhero.bootstrap.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'css/main.less' %}">
+  {% endblock %}
+
+  {% block js-file %}
+  <script type='text/javascript' src="{% static 'jquery/jquery-1.11.0.min.js' %}"></script>
+  <script type='text/javascript' src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+  <script type='text/javascript' src="{% static 'less/less.js' %}"></script>
+  {% endblock %}
+</head>
+<body>
+  <div class="navbar navbar-default">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url "index" %}">LOGO</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url "index" %}">{% trans '首页' %}</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '产品库' %}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url "stock" %}">{% trans '股票' %}</a></li>
+            <li class='disabled'><a href="">{% trans '债券' %}</a></li>
+            <li class='disabled'><a href="#">{% trans '外汇' %}</a></li>
+            <li class='disabled'><a href="#">{% trans '大宗商品' %}</a></li>
+            <li class='disabled'><a href="#">{% trans '指数' %}</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的关注' %}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">{% trans '创建列表' %}</a></li>
+            <li><a href="#">{% trans '列表1' %}</a></li>
+            <li><a href="#">{% trans '列表2' %}</a></li>
+            <li><a href="#">{% trans '列表3' %}</a></li>
+            <li><a href="#">{% trans '列表4' %}</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的新闻' %}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">{% trans '创建新闻' %}</a></li>
+            <li><a href="#">{% trans '新闻1' %}</a></li>
+            <li><a href="#">{% trans '新闻2' %}</a></li>
+            <li><a href="#">{% trans '新闻3' %}</a></li>
+            <li><a href="#">{% trans '新闻4' %}</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的账号' %}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">{% trans '设置' %}</a></li>
+            <li class='disabled'><a href="#">{% trans '付款' %}</a></li>
+            <li class='disabled'><a href="#">{% trans '升级' %}</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '技术支持' %}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">{% trans '反馈' %}</a></li>
+            <li><a href="#">{% trans '帮助' %}</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right user">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>{{ request.user }}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">{%  trans '设置' %}</a></li>
+            <li><a href="#">{%  trans '退出' %}</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="main">
+    {% block main %}
+    {% endblock %}
+  </div>
+  <div class='cut-rule'></div>
+  <div class='footer'>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="headline"><h5>{% trans '常用' %}</h5></div>
+          <ul class='nostyle'>
+            <li>{% trans '常见问题' %}</li>
+            <li>{% trans '新手引导' %}</li>
+          </ul>
+        </div>
+        <div class="col-md-2">
+          <div class="headline"><h5>{% trans '常用' %}</h5></div>
+          <ul class='nostyle'>
+            <li>{% trans '常见问题' %}</li>
+            <li>{% trans '新手引导' %}</li>
+          </ul>
+        </div>
+        <div class="col-md-2">
+          <div class="headline"><h5>{% trans '关于' %}</h5></div>
+          <ul class='nostyle'>
+            <li>{% trans '关于我们' %}</li>
+            <li>{% trans '联系我们' %}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
