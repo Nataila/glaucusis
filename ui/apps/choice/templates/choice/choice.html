@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block css-file %}
+  {{ block.super }}
+  <link rel="stylesheet/less" type="text/css" href="{% static 'choice/css/choice.less' %}">
+{% endblock %}
+{% block js-file %}
+  {{ block.super }}
+  <script src='{% static 'choice/js/d3.v3.min.js' %}'></script>
+  <script src='{% static 'choice/js/hot-chart.js' %}'></script>
+  <script src='{% static 'choice/js/choice.js' %}'></script>
+  <script src='{% static 'jquery/scriptbreaker-multiple-accordion-1.js' %}'></script>
+{% endblock %}
+{% block main %}
+<div class="left col-md-3 content select-stock">
+  <form action="." method='GET' role='form' id='choice-form'>
+    <div class="form-group">
+      <input class="form-control" id="focusedInput" type="text" name="search" placeholder="{% trans '搜索公司/代码' %}">
+    </div>
+  </form>
+  <div class="stock-list">
+    <ul class="topnav list-unstyled">
+      {% for i in final_result %}
+      <li><a href="#">{{ i.country }}</a>
+        <ul class='list-unstyled'>
+          {% for j in i.data %}
+          <li><a href="#">{{ j.exchange_name }}</a>
+            <ul class='list-unstyled'>
+              {% for k in j.instrument %}
+              <li><a href="#">{{ k }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<div class="right col-md-9 content">
+  <div id="hot-chart">
+  </div>
+</div>
+{% endblock %}
+

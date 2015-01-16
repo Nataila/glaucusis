@@ -5,5 +5,5 @@
 from django.conf.urls import url, patterns
 
 urlpatterns = patterns('',
-    url('^$', 'apps.users.views.auth_login', {'template': 'users/login.html'}, 'auth_login')
+    url('^$', 'apps.users.views.auth_login', {'template': 'users/login.html'}, 'auth_login'),
 )

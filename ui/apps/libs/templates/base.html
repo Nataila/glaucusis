@@ -1,10 +1,14 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load glau_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}glaucusis{% endblock %}</title>
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" type="image/x-icon" />
+  <title>
+    {% block title %}glaucusis{% endblock %}
+  </title>
   {% block css-file %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/theme/superhero.bootstrap.css' %}">
     <link rel="stylesheet/less" type="text/css" href="{% static 'css/main.less' %}">
@@ -14,6 +18,7 @@
   <script type='text/javascript' src="{% static 'jquery/jquery-1.11.0.min.js' %}"></script>
   <script type='text/javascript' src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
   <script type='text/javascript' src="{% static 'less/less.js' %}"></script>
+  <script type='text/javascript' src="{% static 'cookies/jquery.cookies.2.2.0.js' %}"></script>
   {% endblock %}
 </head>
 <body>
@@ -24,7 +29,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{% url "index" %}">LOGO</a>
+      <a class="navbar-brand" href="{% url "index" %}"><img src="{% static "images/logo.png" %}" id='brand-logo' alt=""></a>
     </div>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
       <ul class="nav navbar-nav">
@@ -34,7 +39,7 @@
         <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '产品库' %}<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="{% url "stock" %}">{% trans '股票' %}</a></li>
+            <li class='disabled'><a href="{% url "stock" %}">{% trans '股票' %}</a></li>
             <li class='disabled'><a href="">{% trans '债券' %}</a></li>
             <li class='disabled'><a href="#">{% trans '外汇' %}</a></li>
             <li class='disabled'><a href="#">{% trans '大宗商品' %}</a></li>
@@ -45,12 +50,12 @@
       <ul class="nav navbar-nav">
         <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的关注' %}<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">{% trans '创建列表' %}</a></li>
-            <li><a href="#">{% trans '列表1' %}</a></li>
-            <li><a href="#">{% trans '列表2' %}</a></li>
-            <li><a href="#">{% trans '列表3' %}</a></li>
-            <li><a href="#">{% trans '列表4' %}</a></li>
+          <ul class="dropdown-menu watchfull">
+            <li><a href="{% url "choice" %}">{% trans '创建列表' %}</a></li>
+            <li class="divider"></li>
+            {% for i in attention_data %}
+              <li><a href="#">{{ i.instrument }}</a></li>
+            {% endfor %}
           </ul>
         </li>
       </ul>
@@ -58,7 +63,8 @@
         <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的新闻' %}<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">{% trans '创建新闻' %}</a></li>
+            <li><a href="{% url "news" %}">{% trans '创建新闻' %}</a></li>
+            <li class="divider"></li>
             <li><a href="#">{% trans '新闻1' %}</a></li>
             <li><a href="#">{% trans '新闻2' %}</a></li>
             <li><a href="#">{% trans '新闻3' %}</a></li>
@@ -85,12 +91,15 @@
           </ul>
         </li>
       </ul>
+      <ul class="nav navbar-nav">
+        <li><a href="{% url "simulate" %}">{% trans '模拟交易平台' %}</a></li>
+      </ul>
       <ul class="nav navbar-nav navbar-right user">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>{{ request.user }}<b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="#">{%  trans '设置' %}</a></li>
-            <li><a href="#">{%  trans '退出' %}</a></li>
+            <li><a href="{% url "auth_logout" %}">{%  trans '退出' %}</a></li>
           </ul>
         </li>
       </ul>
