@@ -1,5 +1,4 @@
 .main {
-  height: 80%;
   padding-top: 0px;
   .watched {
     color: #5cb85c;
@@ -54,6 +53,7 @@
     }
   }
   .stock-chart {
+    height: 90%;
     padding: 0px;
     .glyphicon-fullscreen {
       top: 10px;
@@ -63,7 +63,7 @@
       position: absolute;
     }
     .line-chart {
-      height: 100%;
+      height: 500px;
       border: 1px #4e5d6c solid;
     }
   }
@@ -83,9 +83,14 @@
       .readmore {
         float: right;
         font-size: 12px;
-        span.time {
-          margin-right: 20px;
+        span+span {
+          margin-left: 10px;
         }
+      }
+      span.new-fasi {
+        color: red;
+        font-size: 16px;
+        font-weight: 700;
       }
     }
   }

@@ -20,7 +20,7 @@
       <input type="text" name='instr_id' value='{{ need_watch_instr.id }}' style='display: none'>
       {% if is_watched %}
       <select name="to_list" class="form-control">
-        {% for i in list_result%}
+        {% for i in default_result.my_watch_list %}
           <option value="{{ i.id }}">{{ i.list_name }}</option>
         {% endfor %}
       </select>
@@ -32,7 +32,7 @@
   </div>
   <div class="stock-list content col-md-2" id='exchange-content'>
     <div class="panel-group" id="exchange" role="tablist" aria-multiselectable="true">
-    {% for i in list_result %}
+    {% for i in default_result.my_watch_list %}
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="heading{{ i.id }}">
             <h4 class="panel-title">
@@ -46,13 +46,6 @@
               <ul class="list-unstyled self-stock">
                 {% for k in i.data %}
                 <li class='instrument-name'><a href="/stock/?in_id={{ k.id }}" data-id={{ k.id }}> {{ k.name }} </a>
-                  {% comment %}
-                  {% if attention_data|is_atten:k.id %}
-                    <span class="glyphicon glyphicon-ok watched-icon"><span>已关注</span></span>
-                  {% else %}
-                    <span class="glyphicon glyphicon-plus add-icon"><span>关注</span></span>
-                  {% endif %}
-                  {% endcomment %}
                   </li>
                 {% endfor %}
               </ul>

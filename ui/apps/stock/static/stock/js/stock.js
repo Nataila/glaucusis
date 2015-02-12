@@ -6,6 +6,10 @@ $(document).ready(function () {
       var $tpl = $('#tplNews').html();
       $("#news-content").html(_.template($tpl, {'data': data}));
       $("#news-accordion").find('.panel-collapse:eq(0)').addClass('in');
+      $('.new_link').on('click', function () {
+        var toLink = $(this).data('link');
+        window.open(toLink);
+      })
     })
   }
 

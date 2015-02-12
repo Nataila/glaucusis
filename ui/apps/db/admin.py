@@ -7,7 +7,10 @@ from apps.db.models import (Issuser, IssuerAdmin, Instrument, InstrumentAdmin,
         Industry_classificationAdmin, Country, CountryAdmin,
         Identifier, IdentifierAdmin, Price, PriceAdmin,
         Customer, CustomerAdmin, Watchlist, WatchlistAdmin, News, NewsAdmin,
-        Interlistwatch, InterlistwatchAdmin, Listinter, ListinterAdmin)
+        Interlistwatch, InterlistwatchAdmin, Listinter, ListinterAdmin,
+        Newswatch, NewswatchAdmin, MynewswatchList, MynewswatchListAdmin,
+        NewsRemind, NewsRemindAdmin
+        )
 
 admin.site.register(Issuser, IssuerAdmin)
 admin.site.register(Instrument, InstrumentAdmin)
@@ -21,3 +24,6 @@ admin.site.register(Watchlist, WatchlistAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Interlistwatch, InterlistwatchAdmin)
 admin.site.register(Listinter, ListinterAdmin)
+admin.site.register(Newswatch, NewswatchAdmin)
+admin.site.register(MynewswatchList, MynewswatchListAdmin)
+admin.site.register(NewsRemind, NewsRemindAdmin)

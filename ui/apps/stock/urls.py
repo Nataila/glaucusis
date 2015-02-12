@@ -12,4 +12,5 @@ urlpatterns = patterns('apps.stock.views',
     url('^set_instr_watch/$', 'set_instr_watch'),
     url('^add_to_list/$', 'add_to_list', name='add_to_list'),
     url('^get_news/$', 'get_news'),
+    url('^add_watch_list/$', 'add_watch_list', name='add_watch_list'),
 )

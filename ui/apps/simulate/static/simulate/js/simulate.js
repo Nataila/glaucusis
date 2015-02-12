@@ -1,3 +1,6 @@
 $(document).ready(function () {
-  console.log('run');
+  $('.result').hide();
+  $('.btn-start').on('click', function () {
+    $('.result').show()
+  })
 })

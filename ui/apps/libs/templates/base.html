@@ -19,6 +19,7 @@
   <script type='text/javascript' src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
   <script type='text/javascript' src="{% static 'less/less.js' %}"></script>
   <script type='text/javascript' src="{% static 'cookies/jquery.cookies.2.2.0.js' %}"></script>
+  <script type='text/javascript' src="{% static 'js/lib.js' %}"></script>
   {% endblock %}
 </head>
 <body>
@@ -51,24 +52,63 @@
         <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的关注' %}<b class="caret"></b></a>
           <ul class="dropdown-menu watchfull">
-            <li><a href="{% url "choice" %}">{% trans '创建列表' %}</a></li>
+            <li class='create_list'><a data-toggle="modal" data-target="#myModal">{% trans '创建列表' %}</a></li>
             <li class="divider"></li>
-            {% for i in attention_data %}
-              <li><a href="#">{{ i.instrument }}</a></li>
+            {% for i in default_result.my_watch_list %}
+            {% if not i.data %}
+              <li class="dropdown-submenu">
+              <a tabindex="-1" href="javascript:;">{{ i.list_name }}</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/choice/">{% trans '添加股票' %}</a></li>
+                </ul>
+              </li>
+            {% else %}
+            <li class="dropdown-submenu">
+            <a tabindex="-1" href="javascript:;">{{ i.list_name }}</a>
+              <ul class="dropdown-menu">
+                <li><a href="/choice/">{% trans '添加股票' %}</a></li>
+                <li class="divider"></li>
+                {% for k in i.data %}
+                <li><a tabindex="-1" href="/stock/?in_id={{ k.id }}">{{ k.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            {% endif %}
             {% endfor %}
           </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav">
         <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的新闻' %}<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的新闻' %} <span class="badge badge-news-remind"></span><b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="{% url "news" %}">{% trans '创建新闻' %}</a></li>
+            <li class='create_list'><a data-toggle="modal" data-target="#newsModal">{% trans '创建新闻列表' %}</a></li>
             <li class="divider"></li>
-            <li><a href="#">{% trans '新闻1' %}</a></li>
-            <li><a href="#">{% trans '新闻2' %}</a></li>
-            <li><a href="#">{% trans '新闻3' %}</a></li>
-            <li><a href="#">{% trans '新闻4' %}</a></li>
+            <li class='create_list' id='news-remind'><a>{% trans '我的新闻提醒' %} <span class="badge badge-news-remind"></span></a></li>
+            <li class="divider"></li>
+            {% for i in default_result.watch_news %}
+            {% if not i.news_list %}
+              <li class="dropdown-submenu">
+              <a tabindex="-1" href="javascript:;">{{ i.name }}</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/news/?list_id={{ i.list_id }}">{% trans '添加新闻' %}</a></li>
+                  <li><a href="/news/?list_id={{ i.list_id }}">{% trans '修改列表' %}</a></li>
+                </ul>
+              </li>
+            {% else %}
+            <li class="dropdown-submenu">
+            <a tabindex="-1" href="javascript:;">{{ i.name }}</a>
+              <ul class="dropdown-menu">
+                <li><a href="/news/">{% trans '添加新闻' %}</a></li>
+                <li><a href="/news/?list_id={{ i.list_id }}">{% trans '修改列表' %}</a></li>
+                <li class="divider"></li>
+                {% for k in i.news_list %}
+                <li><a tabindex="-1">{{ k }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            {% endif %}
+            {% endfor %}
           </ul>
         </li>
       </ul>
@@ -76,7 +116,7 @@
         <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans '我的账号' %}<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">{% trans '设置' %}</a></li>
+            <li><a href="{% url 'set_account' %}">{% trans '账号设置' %}</a></li>
             <li class='disabled'><a href="#">{% trans '付款' %}</a></li>
             <li class='disabled'><a href="#">{% trans '升级' %}</a></li>
           </ul>
@@ -92,13 +132,13 @@
         </li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="{% url "simulate" %}">{% trans '模拟交易平台' %}</a></li>
+        <li><a href="{% url "simulate" %}">{% trans '策略回测平台' %}</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right user">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>{{ request.user }}<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">{%  trans '设置' %}</a></li>
+            <li><a href="{% url 'set_account' %}">{%  trans '设置' %}</a></li>
             <li><a href="{% url "auth_logout" %}">{%  trans '退出' %}</a></li>
           </ul>
         </li>
@@ -137,5 +177,56 @@
       </div>
     </div>
   </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans '关闭' %}</span></button>
+        <h4 class="modal-title" id="myModalLabel">{% trans '创建列表' %}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-inline" role="form" name='add_watched_name' method='GET' action='{% url 'add_watch_list' %}'>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">{% trans '列表名称：' %}</div>
+              <input class="form-control" name='watched_name' placeholder="{% trans '输入列表名称' %}">
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+        <button type="button" class="btn btn-primary add-list-ok">{% trans '保存' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="newsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans '关闭' %}</span></button>
+        <h4 class="modal-title" id="newsModalLabel">{% trans '创建新闻列表' %}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-inline" role="form" name='add_watched_name' method='GET' action='{% url 'add_watch_list' %}'>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">{% trans '列表名称：' %}</div>
+              <input class="form-control" name='watched_list_name' placeholder="{% trans '输入列表名称' %}">
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+        <button type="button" class="btn btn-primary add-news-list-ok">{% trans '保存' %}</button>
+      </div>
+    </div>
+  </div>
+<
 </body>
 </html>

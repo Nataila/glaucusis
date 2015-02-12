@@ -50,6 +50,7 @@ class Industry_classification(models.Model):
     parent_classification_id = models.CharField(max_length=120, verbose_name = u'行业上级分类代码')
     parent_classification_name = models.CharField(max_length=120, verbose_name = u'行业上级分类名称')
     classification_set = models.CharField(max_length=120, verbose_name = u'分类标准')
+    exchange_id = models.ForeignKey(Exchange, verbose_name = u'所属证交所')
 
     def __unicode__(self):
         return u'%s' % (self.industry_classification_name)
@@ -64,9 +65,9 @@ class Instrument(models.Model):
     instrument_id = models.IntegerField(verbose_name = u'证券代码', unique=True)
     instrument_name = models.CharField(max_length=120, verbose_name = u'证券名称')
     instrument_type = models.CharField(max_length=80, verbose_name = u'证券类型')
-    issuer_id = models.ForeignKey(Issuser)
-    exchange_id = models.ForeignKey(Exchange)
-    industry_classification_id = models.ForeignKey(Industry_classification)
+    issuer_id = models.ForeignKey(Issuser, verbose_name = u'发行者')
+    exchange_id = models.ForeignKey(Exchange, verbose_name = u'交易所')
+    industry_classification_id = models.ForeignKey(Industry_classification, verbose_name = u'版块')
 
     def __unicode__(self):
         return u'%s' % (self.instrument_name)
@@ -110,7 +111,7 @@ class Price(models.Model):
     instrument_fasi = models.CharField(max_length=120, verbose_name = u'情绪值')
 
     def __unicode__(self):
-        return u'%s' % (self.price_type)
+        return u'%s' % (self.instrument_id)
 class PriceAdmin(admin.ModelAdmin):
     list_dispaly = ('price_value', 'instrument_fasi', 'date_time')
 
@@ -192,4 +193,35 @@ class InterlistwatchAdmin(admin.ModelAdmin):
 #class InstrWatchAdmin(admin.ModelAdmin):
 #    list_dispaly = ('user', 'news', 'instrument')
 
+class MynewswatchList(models.Model):
+    user = models.ForeignKey(User)
+    list_name = models.CharField(max_length=120, verbose_name=u'列表名称')
 
+    def __unicode__(self):
+        return u'%s' % (self.list_name)
+
+class MynewswatchListAdmin(admin.ModelAdmin):
+    list_dispaly = ('list_name',)
+
+class Newswatch(models.Model):
+    user = models.ForeignKey(User)
+    watch_list_name = models.ForeignKey(MynewswatchList)
+    source = models.CharField(max_length=120, verbose_name=u'新闻源')
+    entity = models.CharField(max_length=120, verbose_name=u'实体')
+    incident = models.CharField(max_length=120, verbose_name=u'事件')
+
+    def __unicode__(self):
+        return u'%s' % (self.source)
+class NewswatchAdmin(admin.ModelAdmin):
+    list_dispaly = ('source', 'entity', 'incident')
+
+
+class NewsRemind(models.Model):
+    user = models.ForeignKey(User)
+    last_search_time = models.DateTimeField(auto_now_add=False, verbose_name=u'最后查询时间')
+
+    def __unicode__(self):
+        return u'%s' % (self.last_search_time)
+
+class NewsRemindAdmin(admin.ModelAdmin):
+    list_dispaly = ('user', 'last_search_time',)

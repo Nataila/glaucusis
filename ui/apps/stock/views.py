@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 
 from apps.db.models import Instrument, News, Instrument, Price, Listinter, Interlistwatch
+from apps.libs.views import get_default_list
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -51,7 +52,7 @@ def get_exchange(request):
 def stock(request, template):
     need_watch_instr = ''
     is_watched = True
-    list_result = get_instr_watch_list(request)
+    default_result = get_default_list(request)
     search_intr = request.GET.get('in_id', '')
     user_id = request.user.id
     if search_intr:
@@ -62,37 +63,51 @@ def stock(request, template):
     content = {
         'is_watched': is_watched,
         'need_watch_instr': need_watch_instr,
-        'list_result': list_result,
+        'default_result': default_result,
         'request': request,
     }
     return TemplateResponse(request, template, content)
 
-@login_required(login_url='/login/')
-def get_instr_watch_list(request):
-    watch_list = {}
-    list_result = []
-    mid_dict = {}
-    user = request.user.id
-    list_data = Interlistwatch.objects.filter(user=user)
-    for i in list_data:
-        watch_list[i.list_name.name] = []
-    for i in list_data:
-        watch_list[i.list_name.name].append({'name': i.inter_list.instrument_name, 'id': i.inter_list.id})
-        mid_dict[i.list_name.name] = i.id
-    for i in watch_list:
-        list_result.append({'list_name': i, 'data': watch_list[i]})
-    for i in list_result:
-        i['id'] = mid_dict[i['list_name']]
-    return list_result
+#@login_required(login_url='/login/')
+#def get_instr_watch_list(request):
+#    '''获取关注的列表以及列表下的股票
+#    '''
+#    watch_list = {}
+#    list_result = []
+#    mid_dict = {}
+#    user = request.user.id
+#    list_data = Interlistwatch.objects.filter(user=user)
+#    user_watched = Listinter.objects.all()
+#    for i in user_watched:
+#        watch_list[i.name] = []
+#    #for i in list_data:
+#    #    watch_list[i.list_name.name] = []
+#    for i in list_data:
+#        watch_list[i.list_name.name].append({'name': i.inter_list.instrument_name, 'id': i.inter_list.id})
+#        mid_dict[i.list_name.name] = i.id
+#    for i in watch_list:
+#        list_result.append({'list_name': i, 'data': watch_list[i]})
+#    for i in list_result:
+#        try:
+#            i['id'] = mid_dict[i['list_name']]
+#        except KeyError:
+#            i['id'] = []
+#    return list_result
 
 @login_required(login_url='/login/')
 def get_chart_data(request):
+    ''' 获取曲线图数据
+    '''
     search_id = 1
     instrId = request.GET.get('instrId', '')
+    instr_name = request.GET.get('instr_name', '')
     if instrId:
         search_id = instrId
+        data = Price.objects.filter(instrument_id=search_id).order_by('date_time')
+    if instr_name:
+        data = Price.objects.filter(instrument_id__instrument_name=instr_name).order_by('date_time')
+
     result = {'instrument': '', 'time': [], 'price_value': [], 'instrument_fasi': []}
-    data = Price.objects.filter(instrument_id=search_id).order_by('date_time')
     for i in data:
         result['price_value'].append(int(i.price_value))
         result['instrument_fasi'].append(int(i.instrument_fasi))
@@ -103,6 +118,8 @@ def get_chart_data(request):
 
 @login_required(login_url='/login/')
 def set_instr_watch(request):
+    ''' 设置关注股票
+    '''
     result = {'status': 200}
     user = request.user
     watch_id = request.GET.get('instrId')
@@ -116,16 +133,24 @@ def set_instr_watch(request):
 def add_to_list(request):
     list_id = request.GET.get('to_list', '')
     instr_id = request.GET.get('instr_id', '')
+    instr_name = request.GET.get('instr_name', '')
     list_obj = Listinter.objects.get(id=list_id)
-    instr_obj = Instrument.objects.get(id=instr_id)
+    if instr_name:
+        instr_obj = Instrument.objects.get(instrument_name=instr_name)
+    elif instr_id:
+        instr_obj = Instrument.objects.get(id=instr_id)
+
     instr_list = Interlistwatch(
             user = request.user,
             list_name = list_obj,
             inter_list = instr_obj
         )
     instr_list.save()
-    reverse_url = '/stock?in_id=%s'%instr_id
-    return HttpResponseRedirect(reverse_url)
+    if instr_name:
+        return HttpResponse(json.dumps({'code': 200, 'instr_id': instr_obj.id}))
+    elif instr_id:
+        reverse_url = '/stock?in_id=%s'%instr_id
+        return HttpResponseRedirect(reverse_url)
 
 @login_required(login_url='/login/')
 def get_news(request):
@@ -173,6 +198,16 @@ def get_news(request):
                 'name': i.industry_classification.industry_classification_name
             }
             })
-    print result
     result = json.dumps(result_list)
     return HttpResponse(result)
+
+@login_required(login_url='/login/')
+def add_watch_list(request):
+    user = request.user
+    new_watch_name = request.GET.get('watched_name', '')
+    watched_list = Listinter(
+        user = user,
+        name = new_watch_name
+    )
+    watched_list.save()
+    return HttpResponse(200)

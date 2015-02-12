@@ -8,8 +8,8 @@ urlpatterns = patterns('',
     url(r'^admin', include(admin.site.urls)),
     url(r'^home/$', include('apps.home.urls')),
     url(r'^stock/', include('apps.stock.urls')),
-    url(r'^choice/$', include('apps.choice.urls')),
-    url(r'^news/$', include('apps.news.urls')),
+    url(r'^choice/', include('apps.choice.urls')),
+    url(r'^news/', include('apps.news.urls')),
     url(r'^simulate/$', include('apps.simulate.urls')),
 )
 
@@ -18,4 +18,6 @@ urlpatterns += patterns('',
     url(r'^login/$', include('apps.users.urls')),
     url(r'^auth_logout', 'apps.users.views.auth_logout', name='auth_logout'),
     url(r'^register/$', 'apps.users.views.register', {'template': 'users/register.html'}, 'register'),
+    url('^set_account/$', 'apps.users.views.set_account', {'template': 'users/set_account.html'}, 'set_account'),
+    url('^acount_password/$', 'apps.users.views.acount_password', {'template': 'users/set_account.html'}, 'set_password'),
 )

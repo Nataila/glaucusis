@@ -13,7 +13,7 @@
   <div class="search-content">
     <form action="." method="GET" role='form'>
       <div class="form-group">
-        <input class="form-control" id="focusedInput" type="text" name="search" placeholder="{% trans '搜索公司/代码' %}">
+        <input class="form-control" id="focusedInput" type="text" name="search" placeholder="{% trans '搜索公司/代码' %}" value={{ search }}>
       </div>
     </form>
   </div>
@@ -40,6 +40,7 @@
         {% endfor %}
       </tbody>
     </table>
+    <div style='height: 800px;'></div>
   </div>
 </div>
 {% endblock %}
