@@ -67,7 +67,7 @@ def register(request, template):
             user_mind.user = user
             user_mind.last_search_time = now
             user_mind.save()
-            return HttpResponseRedirect(reverse('auth_login'))
+            return HttpResponseRedirect(reverse('pre_login'))
 
     return TemplateResponse(request, template, {'form': form})
 

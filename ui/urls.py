@@ -14,10 +14,10 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^$', RedirectView.as_view(url='/login/')),
-    url(r'^login/$', include('apps.users.urls')),
+    url(r'^$', RedirectView.as_view(url='/accounts/')),
+    url(r'^accounts/', include('apps.users.urls')),
     url(r'^auth_logout', 'apps.users.views.auth_logout', name='auth_logout'),
-    url(r'^register/$', 'apps.users.views.register', {'template': 'users/register.html'}, 'register'),
+    url(r'^trial/$', 'apps.users.views.register', {'template': 'sho/trial.html'}, 'trial'),
     url('^set_account/$', 'apps.users.views.set_account', {'template': 'users/set_account.html'}, 'set_account'),
     url('^acount_password/$', 'apps.users.views.acount_password', {'template': 'users/set_account.html'}, 'set_password'),
 )

@@ -15,7 +15,12 @@ def index(request, template):
     search = request.GET.get('search', '')
     instr_data = []
     if search:
-        instr_data = Instrument.objects.filter(Q(instrument_id__exact=search) | Q(instrument_name__exact=search))
+        #instr_data = Instrument.objects.filter(Q(instrument_id__exact=search) | Q(instrument_name__exact=search))
+        try:
+            search = int(search)
+            instr_data = Instrument.objects.filter(instrument_id__exact=search)
+        except ValueError:
+            instr_data = Instrument.objects.filter(instrument_name__contains=search)
     default_result = get_default_list(request)
     content = {
         'search': search,

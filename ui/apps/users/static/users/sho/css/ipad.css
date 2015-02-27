@@ -1,0 +1,67 @@
+/*小于1024*/
+@media screen and (max-width:1024px){
+    .robot{left:150px;}
+    .cloud{background-position:-50px 5px;}
+    .about_us span.text1{left:80px;}
+    .about_us span.text2{left:336px;}
+    .about_us span.text3{left:710px;top:470px;}
+    .about_us span.text4{left:900px;top:700px;}
+    .footer-rss a{width:50px;}
+    .i-banner{height:550px;}
+    .pro_big_title{padding:0 10%;}
+    .pro_box{width:40%;height:500px;}
+    .pro_img{width:60%;height:500px;}
+    .app_item dl{height:300px;}
+    .hdotline{width:70%;}
+    .product_items dl{width:48%;}
+    .overview_title strong{font-size:1.4em;}
+    .overview_title p{font-size:1.2em;}
+    .overview_col .btn .btn-blue{margin-left:-0.8em;}
+    .pro_five .pro_text strong{font-size:1em;}
+    .pro_five .pro_text p{font-size:.8em;}
+    .pro_three .pro_text p{font-size:.8em;}
+    .pro_three .pro_text strong{font-size:1em;}
+    .pro_tec span.text1{right:750px;font-size:1em;}
+    .pro_tec span.text2{right:810px;width:200px;top:500px;font-size:1em;}
+    .pro_tec span.text3{right:810px;width:200px;top:590px;font-size:1em;}
+    .pro_tec span.text4{font-size:1em;}
+    .pro_tec span.text5{font-size:1em;}
+    .pro_tec span.text6{font-size:1em;}
+    .pro_five table td .pro_text strong{font-size:1.1em;}
+    .pro_five{padding-top:40px;}
+    .pro_pie{width:150px;height:150px;line-height:150px;}
+    .pro_pie img{width:60px;}
+    .pro_pie div{width:100%;height:100%;}
+    .pro_pie div{background-size:100% 100%;}
+}
+/*大于1200*/
+@media screen and (min-width:1200px){
+    .robot{left:250px;}
+    .cloud{background-position:-50px 5px;}
+    .about_us span.text1{left:80px;}
+    .about_us span.text2{left:336px;}
+    .about_us span.text3{left:710px;}
+    .about_us span.text4{left:910px;}
+    .footer-rss a{width:70px;}
+    .app_item dl{width:80%;}
+    .app_item{background:#fff;}
+    .pro_five{max-width:1400px;margin:0 auto;padding-top:80px;min-width:1024px;}
+}
+
+@media screen and (min-width:1400px){
+    .robot{left:300px;}
+    .cloud{background-position:86px 0;}
+    .about_us span.text1{left:250px;}
+    .about_us span.text2{left:476px;top:490px;}
+    .about_us span.text3{left:860px;top:464px;}
+    .about_us span.text4{left:1043px;top:710px;}
+
+
+}
+@media screen and (min-width:1200px) and (max-width:1400px){
+    .cloud{background-position:35px 5px;}
+    .about_us span.text1{left:180px;}
+    .about_us span.text2{left:406px;}
+    .about_us span.text3{left:800px;top:460px;}
+    .about_us span.text4{left:990px;top:710px;}
+}
